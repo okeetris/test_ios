@@ -15,12 +15,9 @@ jobs:
       - name: Diff
         id: diff
         uses: yanamura/git-merge-diff@v1
-        with:
-            from: prev
-            to: latest
   print:
     runs-on: ubuntu-latest
-    name: install and test
+    name: echo
     steps:
     - name: print
       run: |
