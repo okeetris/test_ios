@@ -94,10 +94,10 @@ jobs:
           cd ios && pod install
       - name: test pwd
         run: | 
-          ls -la
+          cd ios && ls -la
       - name: Build app
         run: |       
-          xcodebuild -workspace testProject.xcworkspace -scheme testProject archive -archivePath testProject.xcarchive -allowProvisioningUpdates
+          cd ios && xcodebuild -workspace testProject.xcworkspace -scheme testProject archive -archivePath testProject.xcarchive -allowProvisioningUpdates
           xcodebuild -exportArchive -archivePath ./testProject.xcarchive -exportPath . -exportOptionsPlist testProject/Info.plist
           mv testProject.ipa ../testProject.ipa
       - name: Upload Artifact
