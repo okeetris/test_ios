@@ -15,6 +15,9 @@ jobs:
       - name: Diff
         id: diff
         uses: yanamura/git-merge-diff@v1
+        with:
+          from: prev
+          to: latest
 #   install-and-test:
 #     runs-on: ubuntu-latest
 #     name: install and test
