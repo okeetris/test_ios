@@ -25,7 +25,7 @@ jobs:
       - name: Get Diff Action
         # You may pin to the exact commit or the version.
         # uses: technote-space/get-diff-action@f6209c2e93be02d3c2b16956920a47203b3e1bcf
-      - uses: technote-space/get-diff-action@v4
+      - uses: technote-space/get-diff-action@v4.0.5
         with:
           CHECK_ONLY_COMMIT_WHEN_DRAFT: true 
   print:
