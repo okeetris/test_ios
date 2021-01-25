@@ -94,7 +94,7 @@ jobs:
           cd ios && pod install
       - name: Build app
         run: |       
-          xcodebuild -workspace testProject.xcworkspace -scheme myapp archive -archivePath testProject.xcarchive -allowProvisioningUpdates
+          xcodebuild -workspace testProject.xcworkspace -scheme testProject archive -archivePath testProject.xcarchive -allowProvisioningUpdates
           xcodebuild -exportArchive -archivePath ./testProject.xcarchive -exportPath . -exportOptionsPlist testProject/Info.plist
           mv testProject.ipa ../testProject.ipa
       - name: Upload Artifact
