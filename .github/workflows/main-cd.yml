@@ -9,12 +9,11 @@ jobs:
   git-diff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Get list of changed files
+        uses: AvraamMavridis/files-changed-action@v3
+        id: changed_files
         with:
-          fetch-depth: 0
-      - name: Diff
-        id: diff
-        uses: yanamura/git-merge-diff@v1
+          target_branch: staging
   print:
     runs-on: ubuntu-latest
     name: echo
