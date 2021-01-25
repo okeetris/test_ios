@@ -1,4 +1,4 @@
-name: Beta Distribution
+name: main cd
 
 on:
   push:
@@ -24,31 +24,36 @@ jobs:
   build-android:
     needs: [install-and-test]
     runs-on: ubuntu-latest
-    name: Beta Distribution
+    name: build-android
     steps:
-      - name: Install node modules
-        run: | 
-          yarn install
-      - name: Cache Gradle Wrapper
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+    - name: Checkout
+      uses: actions/checkout@v2
+    - uses: actions/setup-node@master
+    - uses: c-hive/gha-yarn-cache@v1
 
-      - name: Cache Gradle Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-caches-
-      - name: Make Gradlew Executable
-        run: cd android && chmod +x ./gradlew
+    - name: Install node modules
+      run: |
+        yarn install
+    - name: Cache Gradle Wrapper
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
-      - name: Build Android App Bundle
-        id: build_app
-        run: |
-          cd android && ./gradlew bundleRelease --no-daemon
+    - name: Cache Gradle Dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-caches-
+    - name: Make Gradlew Executable
+      run: cd android && chmod +x ./gradlew
+
+    - name: Build Android App Bundle
+      id: build_app
+      run: |
+        cd android && ./gradlew bundleRelease --no-daemon
 #     - name: Sign App Bundle
 #       id: sign_app
 #       uses: r0adkll/sign-android-release@v1
@@ -59,11 +64,11 @@ jobs:
 #         keyStorePassword: ${{ secrets.ANDROID_SIGNING_STORE_PASSWORD }}
 #         keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: App Bundle
-          path: android/app/build/outputs/bundle/release
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: App Bundle
+        path: android/app/build/outputs/bundle/release
 
 #     - name: Deploy to Play Store (BETA)
 #       uses: r0adkll/upload-google-play@v1
@@ -78,7 +83,7 @@ jobs:
         # mappingFile: android/app/build/outputs/mapping/release/mapping.txt
   build-ios:
     needs: [install-and-test]
-    runs-on: [self-hosted, macos]
+    runs-on: [macos-latest]
     steps: 
       - uses: actions/checkout@v2
       - name: Install npm dependencies
