@@ -92,6 +92,9 @@ jobs:
       - name: Install pod dependencies
         run: |
           cd ios && pod install
+      - name: test pwd
+        run: | 
+          ls -la
       - name: Build app
         run: |       
           xcodebuild -workspace testProject.xcworkspace -scheme testProject archive -archivePath testProject.xcarchive -allowProvisioningUpdates
