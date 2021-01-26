@@ -1,3 +1,4 @@
+#!/bin/bash
 IFS=' ' read -r -a LOGARRAY <<< $(git log | grep 'Merge:' -m 1)
           changedFiles=$(git diff --name-only ${LOGARRAY[2]} ${LOGARRAY[1]})     
           echo "changedFiles :" $changedFiles
@@ -6,8 +7,10 @@ IFS=' ' read -r -a LOGARRAY <<< $(git log | grep 'Merge:' -m 1)
           do
             echo "path : " $path
             IFS='/' read -ra ARRAY <<< "$path"
-            if [[ "${ARRAY[0]}" = "apps" ]] || [[ "${ARRAY[0]}" = "packages" ]] || [[ "${ARRAY[0]}" = "package.json" ]]; then
+            if [[ "${ARRAY[0]}" = "apps" ]] || [[ "${ARRAY[0]}" = "diff.sh" ]] || [[ "${ARRAY[0]}" = "package.json" ]]; then
                 TRIGGER=true
                 echo "##vso[task.setvariable variable=ios;isOutput=true]$TRIGGER"
             fi
           done
+          echo "::set-output name=trigger::$TRIGGER"
+          echo "finished"
